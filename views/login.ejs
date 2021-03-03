@@ -1,0 +1,23 @@
+<%- include('./partials/header'); %>
+  <body class="container">
+      <div class="row">
+          <div class="col-md-12">
+            <form method="POST" class="mx-auto form" action "/login">
+            <div class="h3">Login</div>
+            <div class="mb-3">
+                <input class="form-control" id="email" aria-describedby="emailHelp"  type="text" name="email" placeholder="Johndoe@profiler.com" />
+            </div>
+            <div  class="mb-3">
+                <input
+                type="password"
+                class="form-control" id="password" aria-describedby="emailHelp"
+                name="password"
+                placeholder="**********"
+                />
+            </div>
+            <button class='btn btn-primary col-md-12'>Login</button>
+            <div class ="small">Have no Account? <a href="/signup">Create Account</a> </div>
+            </form>
+          </div>
+      </div>
+    <%- include('./partials/footer'); %>
