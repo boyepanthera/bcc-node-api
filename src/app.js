@@ -103,4 +103,10 @@ app.delete("/post/:id", async (req, res) => {
 
 app.use("/auth", AuthModule);
 
-app.listen(4001, () => console.log("node server started"));
+if (process.env.NODE_ENV !== "production") {
+  app.listen(4001, () => console.log("node server started"));
+} else {
+  app.list(process.env.PORT, process.env.IP, () =>
+    console.log("node server started")
+  );
+}
