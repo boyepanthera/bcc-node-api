@@ -3,6 +3,10 @@ import { Post } from "./models/Post.model";
 import mongoose from "mongoose";
 const app = express();
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+import { router as AuthModule } from "./routes/auth.route";
+
 const ConnectToDB = async () => {
   return await mongoose.connect(
     "mongodb+srv://boye:boye@xcessspace.izpoz.gcp.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
@@ -96,5 +100,7 @@ app.delete("/post/:id", async (req, res) => {
     });
   }
 });
+
+app.use("/auth", AuthModule);
 
 app.listen(4001, () => console.log("node server started"));

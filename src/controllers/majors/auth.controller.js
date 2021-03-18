@@ -1,5 +1,8 @@
 import { User } from "../../models/User.model";
-import { ValidateRegistrationData } from "../../validators/user.validator";
+import {
+  ValidateRegistrationData,
+  ValidateLoginData,
+} from "../../validators/user.validator";
 import JWT from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
@@ -8,6 +11,11 @@ export const RegisterUserController = async (req, res) => {
   try {
     let { err, value } = await ValidateRegistrationData(req.body);
     if (err) return res.status(400).json({ message: err.details[0].message });
+    const userExist = await User.findOne({ email: value.email });
+    if (userExist)
+      return res
+        .status(403)
+        .json({ message: "user already exist. Login instead" });
     let user = await User.create(value);
     const { _id, email } = user;
     let token = await JWT.sign({ _id, email }, process.env.SecretKey, {
@@ -15,6 +23,33 @@ export const RegisterUserController = async (req, res) => {
       expiresIn: "6h",
     });
     return res.status(201).json({ message: "registration successful", token });
+  } catch (err) {
+    console.log(err);
+    res.status(501).json({ message: err.message });
+  }
+};
+
+export const LoginUserController = async (req, res) => {
+  try {
+    let { err, value } = await ValidateLoginData(req.body);
+    if (err) return res.status(400).json({ message: err.details[0].message });
+    let user = await User.findOne({ email: value.email });
+    if (!user)
+      return res
+        .status(404)
+        .json({ message: `User does not exist, signup instead` });
+    user.comparePassword(value.password, async (err, isMatch) => {
+      if (isMatch) {
+        let { _id, email } = user;
+        let token = await JWT.sign({ _id, email }, process.env.SecretKey, {
+          issuer: "boyepanthera",
+          expiresIn: "6h",
+        });
+        return res.status(201).json({ message: "login successful", token });
+      } else {
+        return res.status(400).json({ message: `Passwords don't match` });
+      }
+    });
   } catch (err) {
     res.status(501).json({ message: err.message });
   }

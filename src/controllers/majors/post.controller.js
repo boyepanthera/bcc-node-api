@@ -1,7 +1,7 @@
 import { Post } from "../../models/Post.model";
 import { ValidatePostData } from "../../validators/post.validator";
 
-export const CreatPostController = async (req, res) => {
+export const CreatePostController = async (req, res) => {
   try {
     let { err, value } = await ValidatePostData(req.body);
     if (err) return res.status(400).json({ message: err.details[0].message });
@@ -25,7 +25,7 @@ export const FetchAllPostController = async (req, res) => {
 export const FetchAPostController = async (req, res) => {
   try {
     let { postId } = req.params;
-    let post = await User.findById(postId);
+    let post = await User.findById(postId).populate("author");
     return res.status(200).json({ message: "post fetched", post });
   } catch (err) {
     res.status(501).json({ message: err.message });
