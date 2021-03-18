@@ -1,6 +1,26 @@
 import express from "express";
 import { Post } from "./models/Post.model";
+import mongoose from "mongoose";
 const app = express();
+
+const ConnectToDB = async () => {
+  return await mongoose.connect(
+    "mongodb+srv://boye:boye@xcessspace.izpoz.gcp.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useFindAndModify: false,
+      useCreateIndex: true,
+    }
+  );
+};
+
+ConnectToDB()
+  .then((db) => console.log("Connected to DB"))
+  .catch((err) => {
+    console.log(`Issues connecting to DB. ${err.message}`);
+    // console.log(err);
+  });
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
@@ -77,4 +97,4 @@ app.delete("/post/:id", async (req, res) => {
   }
 });
 
-app.listen(4004, () => console.log("node server started"));
+app.listen(4001, () => console.log("node server started"));
