@@ -1,11 +1,14 @@
 import express from "express";
 import { Post } from "./models/Post.model";
 import mongoose from "mongoose";
-const app = express();
+import { router as AuthModule } from "./routes/auth.route";
+import cors from "cors";
 
+const app = express();
+app.options("*", cors());
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-import { router as AuthModule } from "./routes/auth.route";
 
 const ConnectToDB = async () => {
   return await mongoose.connect(
