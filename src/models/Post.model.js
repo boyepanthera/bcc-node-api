@@ -1,7 +1,7 @@
 import Mongoose, { Schema } from "mongoose";
 
 const PostSchema = new Schema({
-  id: Schema.Types.ObjectId,
+  _id: Schema.Types.ObjectId,
   title: String,
   tags: [String],
   postedOn: {
