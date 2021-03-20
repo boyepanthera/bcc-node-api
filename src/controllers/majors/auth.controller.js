@@ -2,6 +2,7 @@ import { User } from "../../models/User.model";
 import {
   ValidateRegistrationData,
   ValidateLoginData,
+  ValidateUserUpdateData,
 } from "../../validators/user.validator";
 import JWT from "jsonwebtoken";
 import dotenv from "dotenv";
@@ -74,9 +75,20 @@ export const FetchAUserController = async (req, res) => {
   }
 };
 
+export const FetchSelfUserController = async (req, res) => {
+  try {
+    let user = req.user;
+    return res.status(200).json({ message: "user fetched", user });
+  } catch (err) {
+    res.status(501).json({ message: err.message });
+  }
+};
+
 export const UpdateAUserController = async (req, res) => {
   try {
     let { userId } = req.params;
+    const { err, value } = await ValidateUserUpdateData(req.body);
+    if (err) return res.status(400).json({ message: err.details[0].message });
     let user = await User.findByIdAndUpdate(userId, value, { new: true });
     return res.status(200).json({ message: "user updated", user });
   } catch (err) {

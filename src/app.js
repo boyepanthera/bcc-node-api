@@ -2,6 +2,8 @@ import express from "express";
 import { Post } from "./models/Post.model";
 import mongoose from "mongoose";
 import { router as AuthModule } from "./routes/auth.route";
+import { router as UserModule } from "./routes/user.route";
+import { router as PostModule } from "./routes/post.route";
 import cors from "cors";
 
 const app = express();
@@ -105,6 +107,8 @@ app.delete("/post/:id", async (req, res) => {
 });
 
 app.use("/auth", AuthModule);
+app.use("/user", UserModule);
+app.use("/post", PostModule);
 
 if (process.env.NODE_ENV !== "production") {
   app.listen(4001, () => console.log("node server started"));

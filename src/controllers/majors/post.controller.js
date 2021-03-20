@@ -22,6 +22,15 @@ export const FetchAllPostController = async (req, res) => {
   }
 };
 
+export const FetchAllOwnPostController = async (req, res) => {
+  try {
+    let posts = await Post.find({ author: req.decoded._id });
+    return res.status(200).json({ message: "posts fetched", posts });
+  } catch (err) {
+    res.status(501).json({ message: err.message });
+  }
+};
+
 export const FetchAPostController = async (req, res) => {
   try {
     let { postId } = req.params;
