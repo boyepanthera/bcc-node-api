@@ -1,12 +1,15 @@
 import { User } from "../../models/User.model";
 import JWT from "jsonwebtoken";
+import dotenv from "dotenv";
+dotenv.config();
 
 export const CheckIfUserIsLoggedIn = async (req, res, next) => {
   try {
+    console.log(req.headers);
     if (!req.headers.authorization)
       return res.status(401).json({ message: "Auth token not attached!" });
     let token = req.headers.authorization.split(" ")[1];
-    let decoded = JWT.verify(token, process.env.SecretKey);
+    let decoded = await JWT.verify(token, process.env.SecretKey);
     let { _id } = decoded;
     let user = await User.findById(_id);
     if (!user)
