@@ -5,7 +5,6 @@ dotenv.config();
 
 export const CheckIfUserIsLoggedIn = async (req, res, next) => {
   try {
-    console.log(req.headers);
     if (!req.headers.authorization)
       return res.status(401).json({ message: "Auth token not attached!" });
     let token = req.headers.authorization.split(" ")[1];
@@ -24,6 +23,8 @@ export const CheckIfUserIsLoggedIn = async (req, res, next) => {
 
 export const CheckIfIsSelf = async (req, res, next) => {
   try {
+    console.log(req.user._id);
+    console.log(req.params.userId);
     if (req.user._id == req.params.userId) next();
     else {
       return res

@@ -10,7 +10,6 @@ import {
 import { Router } from "express";
 import { CheckIfIsOwnPost } from "../controllers/middleware/post.middleware";
 import { CheckIfUserIsLoggedIn } from "../controllers/middleware/auth.middleware";
-
 export const router = Router();
 
 router
